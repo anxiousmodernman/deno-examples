@@ -12,16 +12,23 @@ async function main(): Promise<void> {
         stdin: "piped",
     });
 
-
     let streamed = Deno.copy(p2.stdin, p1.stdout);
-
-    await Promise.all([p1.status(), p2.status()]);
-
     let n = await streamed;
-
     console.log("bytes copied:", n);
 
-    return;
+    // hangs
+    // await Promise.all([p1.status(), p2.status()]);
+ 
+    // works
+    // await Promise.all([p1.status()]);
+
+    // hangs
+    // await Promise.all([p2.status()]);
+
+    // Can only await p1
+    let code1 = await p1.status();
+    // p1.stdout.close();
+    // let code = await p2.status();
 
 }
 
