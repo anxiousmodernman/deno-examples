@@ -12,11 +12,14 @@ async function main(): Promise<void> {
         stdin: "piped",
     });
 
-    console.log("one");
-    let promises = await Promise.all([p1.status(), p2.status()]);
-    console.log("two");
-    Deno.copy(p2.stdin, p1.stdout);
-    console.log("three");
+
+    let streamed = Deno.copy(p2.stdin, p1.stdout);
+
+    await Promise.all([p1.status(), p2.status()]);
+
+    let n = await streamed;
+
+    console.log("bytes copied:", n);
 
     return;
 
