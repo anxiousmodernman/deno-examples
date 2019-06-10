@@ -25,10 +25,11 @@ async function main(): Promise<void> {
     // hangs
     // await Promise.all([p2.status()]);
 
-    // Can only await p1
+    // Can only await p1 until we call close on p2 stdin
     let code1 = await p1.status();
-    // p1.stdout.close();
-    // let code = await p2.status();
+    p2.stdin.close();
+    let code2 = await p2.status();
+    console.log("codes:", code1, code2);
 
 }
 
